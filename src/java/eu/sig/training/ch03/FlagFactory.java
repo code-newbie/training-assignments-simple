@@ -2,51 +2,33 @@ package eu.sig.training.ch03;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FlagFactory {
-
-    // tag::getFlag[]
-    public List<Color> getFlagColors(Nationality nationality) {
-        List<Color> result;
-        switch (nationality) {
-        case DUTCH:
-            result = Arrays.asList(Color.RED, Color.WHITE, Color.BLUE);
-            break;
-        case GERMAN:
-            result = Arrays.asList(Color.BLACK, Color.RED, Color.YELLOW);
-            break;
-        case BELGIAN:
-            result = Arrays.asList(Color.BLACK, Color.YELLOW, Color.RED);
-            break;
-        case FRENCH:
-            result = Arrays.asList(Color.BLUE, Color.WHITE, Color.RED);
-            break;
-        case ITALIAN:
-            result = Arrays.asList(Color.GREEN, Color.WHITE, Color.RED);
-            break;
-        case ROMANIA:
-            result = Arrays.asList(Color.BLUE, Color.YELLOW, Color.RED);
-            break;
-        case IRELAND:
-            result = Arrays.asList(Color.GREEN, Color.WHITE, Color.ORANGE);
-            break;
-        case HUNGARIAN:
-            result = Arrays.asList(Color.RED, Color.WHITE, Color.GREEN);
-            break;
-        case BULGARIAN:
-            result = Arrays.asList(Color.WHITE, Color.GREEN, Color.RED);
-            break;
-        case RUSSIA:
-            result = Arrays.asList(Color.WHITE, Color.BLUE, Color.RED);
-            break;
-        case UNCLASSIFIED:
-        default:
-            result = Arrays.asList(Color.GRAY);
-            break;
-        }
-        return result;
-    }
-    // end::getFlag[]
+	private static final Map<Nationality, Flag> FLAGS =
+			new HashMap<Nationality, Flag>();
+	
+	private static Nationality DUTCH;
+	private static Nationality GERMAN;
+	private static Nationality BELGIAN;
+	
+	static {
+		FLAGS.put(DUTCH, new DutchFlag()); 
+		FLAGS.put(GERMAN, new GermanFlag()); 
+		FLAGS.put(BELGIAN, new BelgianFlag()); 
+	}
+	
+	public List<Color> getFlagColors(Nationality nationality) { 
+		Flag flag = FLAGS.get(nationality);
+		flag = (Flag) (flag != null ? flag : new DefaultFlag());
+		return flag.getColors();
+	}
+    
+    public class DefaultFlag { 
+    	public List<Color> getColors() {
+    	return Arrays.asList(Color.RED, Color.WHITE); }
+	}
 
 }
