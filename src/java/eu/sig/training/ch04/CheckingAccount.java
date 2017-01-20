@@ -1,7 +1,7 @@
 package eu.sig.training.ch04;
 
 // tag::CheckingAccount[]
-public class CheckingAccount {
+public class CheckingAccount extends BaseAccount {
     private static final float INTEREST_PERCENTAGE = 0.01f;
     private Money balance = new Money();
     private int transferLimit = 100;
@@ -14,11 +14,8 @@ public class CheckingAccount {
         }
         // 2. Assuming result is 9-digit bank account number, validate 11-test:
         int sum = 0;
-        for (int i = 0; i < counterAccount.length(); i++) {
-            char character = counterAccount.charAt(i);
-            int characterValue = Character.getNumericValue(character);
-            sum = sum + (9 - i) * characterValue;
-        }
+        sum = super.validateAccountNo(counterAccount, sum);
+        
         if (sum % 11 == 0) {
             // 3. Look up counter account and make transfer object:
             CheckingAccount acct = Accounts.findAcctByNumber(counterAccount);
